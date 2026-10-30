@@ -14,6 +14,11 @@ Skin::Skin(UiMain *u) {
     mSkinPath[1] = pMain->getIo()->getRomFsPath() + "skins/" +
                    pMain->getConfig()->get(PEMUConfig::OptId::UI_SKIN)->getString() + "/";
 
+    boot_log(("Skin: data path: " + mSkinPath[0]).c_str());
+    boot_log(("Skin: romfs path: " + mSkinPath[1]).c_str());
+    boot_log(pMain->getIo()->exist(mSkinPath[0] + "config.cfg") ? "Skin: config found in data" : "Skin: config NOT in data");
+    boot_log(pMain->getIo()->exist(mSkinPath[1] + "config.cfg") ? "Skin: config found in romfs" : "Skin: config NOT in romfs");
+
     // try to load skin from data directory first
     if (pMain->getIo()->exist(mSkinPath[0] + "config.cfg")) {
         pConfig = new config::Config("SKIN_CONFIG", mSkinPath[0] + "config.cfg");
@@ -200,6 +205,12 @@ Skin::Skin(UiMain *u) {
             }
         }
     }
+
+    Skin::RectangleShapeGroup mainShape = getRectangleShape({"MAIN"});
+    char skinInfo[192];
+    snprintf(skinInfo, sizeof(skinInfo), "Skin: main rect %.0fx%.0f, ui %.0fx%.0f",
+             mainShape.rect.width, mainShape.rect.height, pMain->getSize().x, pMain->getSize().y);
+    boot_log(skinInfo);
 
     ///
     /// compute global scaling from loaded configuration

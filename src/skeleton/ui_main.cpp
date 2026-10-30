@@ -6,14 +6,20 @@
 #include "pemu.h"
 #include "ui_main.h"
 
+extern void boot_log(const char *msg);
+
 UiMain::UiMain(const Vector2f &size) : C2DRenderer(size) {
     printf("UiMain(%ix%i)\n", (int) UiMain::getSize().x, (int) UiMain::getSize().y);
 }
 
 void UiMain::init(UIRomList *romList, UiMenu *menu, UiEmu *emu, UiMenuState *state) {
+    boot_log("UiMain::init: start");
     pRomList = romList;
+    boot_log("UiMain::init: updateRomList pre");
     pRomList->updateRomList();
+    boot_log("UiMain::init: updateRomList ok");
     add(pRomList);
+    boot_log("UiMain::init: add romList ok");
 
     // build menus from options
     pMenu = menu;
@@ -50,6 +56,7 @@ void UiMain::init(UIRomList *romList, UiMenu *menu, UiEmu *emu, UiMenuState *sta
 
     updateInputMapping(false);
     getInput()->setRepeatDelay(INPUT_DELAY);
+    boot_log("UiMain::init: end");
 }
 
 void UiMain::onUpdate() {
@@ -64,12 +71,11 @@ void UiMain::onUpdate() {
             bool changed = (mOldKeys ^ buttons) != 0;
             mOldKeys = buttons;
             if (!changed) {
-                if (mTimer.getElapsedTime().asSeconds() > 5) {
-                    getInput()->setRepeatDelay(INPUT_DELAY / 20);
-                } else if (mTimer.getElapsedTime().asSeconds() > 3) {
-                    getInput()->setRepeatDelay(INPUT_DELAY / 8);
-                } else if (mTimer.getElapsedTime().asSeconds() > 1) {
-                    getInput()->setRepeatDelay(INPUT_DELAY / 4);
+                float elapsed = mTimer.getElapsedTime().asSeconds();
+                if (elapsed > 3) {
+                    getInput()->setRepeatDelay(50);
+                } else if (elapsed > 1) {
+                    getInput()->setRepeatDelay(75);
                 }
             } else {
                 getInput()->setRepeatDelay(INPUT_DELAY);

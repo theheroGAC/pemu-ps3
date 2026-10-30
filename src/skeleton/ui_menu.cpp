@@ -218,6 +218,10 @@ void UiMenu::updateLines() {
 }
 
 void UiMenu::onKeyUp() {
+    if (menu_options.empty()) {
+        return;
+    }
+
     int index = optionIndex + highlightIndex;
     int middle = maxLines / 2;
 
@@ -242,6 +246,10 @@ void UiMenu::onKeyUp() {
 }
 
 void UiMenu::onKeyDown() {
+    if (menu_options.empty()) {
+        return;
+    }
+
     int index = optionIndex + highlightIndex;
     int middle = maxLines / 2;
 

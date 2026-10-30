@@ -26,20 +26,29 @@ if (PLATFORM_LINUX OR PLATFORM_WINDOWS)
 endif ()
 
 # add sscrap (screenscrapper scrapper!) library
-add_subdirectory(external/sscrap)
+if (PLATFORM_PS3)
+    set(OPTION_MPV_PLAYER OFF CACHE BOOL "Add support for video snaps (mpv)" FORCE)
+    set(OPTION_BUILTIN_LIBCONFIG ON CACHE BOOL "Build libconfig from sources" FORCE)
+endif ()
 
-# required for cmake toolchain setup
+option(OPTION_SSCRAP "Enable sscrap library" ON)
+if (OPTION_SSCRAP)
+    add_subdirectory(external/sscrap)
+endif ()
+
 project(pemu)
 set(PROJECT_AUTHOR cpasjuste)
 set(VERSION_MAJOR 7)
 set(VERSION_MINOR 2)
 
-# pemu (ui)
 add_subdirectory(src/skeleton)
 
-# cores
-add_subdirectory(src/cores/pfbneo)
-add_subdirectory(src/cores/pgen)
-add_subdirectory(src/cores/pnes)
-add_subdirectory(src/cores/psnes)
-add_subdirectory(src/cores/pgba)
+if (OPTION_EMU)
+    add_subdirectory(src/cores/${OPTION_EMU})
+else ()
+    add_subdirectory(src/cores/pfbneo)
+    add_subdirectory(src/cores/pgen)
+    add_subdirectory(src/cores/pnes)
+    add_subdirectory(src/cores/psnes)
+    add_subdirectory(src/cores/pgba)
+endif ()

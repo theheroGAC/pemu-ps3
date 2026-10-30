@@ -37,9 +37,13 @@ file(GLOB GENESIS_SRC
 set(GENESIS_CFLAGS
         -DUSE_16BPP_RENDERING
         -DHAVE_YM3438_CORE -DHAVE_OPLL_CORE
-        -DLSB_FIRST -DMAXROMSIZE=33554432
+        -DMAXROMSIZE=33554432
         -D__PGEN__ -D__PEMU_VERSION_MAJOR__=${VERSION_MAJOR} -D__PEMU_VERSION_MINOR__=${VERSION_MINOR}
 )
+
+if (NOT PLATFORM_PS3)
+    list(APPEND GENESIS_CFLAGS -DLSB_FIRST)
+endif ()
 
 if (OPTION_CHD)
     list(APPEND GENESIS_INC
@@ -60,7 +64,7 @@ endif ()
 ##############
 # pgen
 ##############
-set(PGEN_INC sources)
+set(PGEN_INC sources ${CMAKE_SOURCE_DIR}/src/skeleton/external ${CMAKE_SOURCE_DIR}/external/sscrap/include)
 file(GLOB PGEN_SRC sources/*.c*)
 list(APPEND PGEN_SRC ../main.cpp)
 
@@ -80,6 +84,11 @@ elseif (PLATFORM_PS4)
     set(PS4_PKG_TITLE "pGEN - Portable Genesis Plus GX")
     set(PS4_PKG_TITLE_ID "PGEN00001")
     set(PS4_PKG_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}")
+    list(APPEND GENESIS_CFLAGS -DHAVE_SYS_PARAM_H)
+elseif (PLATFORM_PS3)
+    set(PS3_PKG_TITLE "pGEN - Portable Genesis Plus GX")
+    set(PS3_PKG_TITLE_ID "PGEN00001")
+    set(PS3_PKG_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}")
     list(APPEND GENESIS_CFLAGS -DHAVE_SYS_PARAM_H)
 elseif (PLATFORM_PS5)
     #####################

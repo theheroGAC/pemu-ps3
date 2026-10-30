@@ -76,6 +76,7 @@ typedef struct {
     uint8 enhanced_vscroll_limit;
 } t_config;
 
+#define config genesis_config
 extern t_config config;
 
 extern char GG_ROM[256];

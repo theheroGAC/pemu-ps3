@@ -11,6 +11,8 @@ public:
             : RomList(ui, emuVersion, filters) {};
 
     void build(const ss_api::GameList::GameAddedCb &cb = nullptr) override;
+
+    std::string getGameListPath(const std::string &romPath, const ss_api::System &system) override;
 };
 
 #endif //PEMU_PFBNEO_ROMLIST_H

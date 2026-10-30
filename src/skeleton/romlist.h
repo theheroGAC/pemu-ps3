@@ -20,6 +20,8 @@ namespace pemu {
 
         virtual void initFav();
 
+        virtual std::string getGameListPath(const std::string &romPath, const ss_api::System &system);
+
         void addFav(const ss_api::Game &game);
 
         void removeFav(const ss_api::Game &game);

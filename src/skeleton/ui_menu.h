@@ -15,6 +15,7 @@ namespace pemu {
         struct MenuOption {
             std::string name;
             c2d::config::Option *option = nullptr;
+            MenuOption(const std::string &n, c2d::config::Option *o = nullptr) : name(n), option(o) {}
         };
 
         explicit UiMenu(UiMain *uiMain);

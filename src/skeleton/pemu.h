@@ -39,4 +39,6 @@ using namespace c2d;
 using namespace pemu;
 using namespace ss_api;
 
-#endif //PEMU_H
+void boot_log(const char *msg);
+
+#endif

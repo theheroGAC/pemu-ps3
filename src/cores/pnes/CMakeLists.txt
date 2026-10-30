@@ -50,16 +50,17 @@ set(NESTOPIA_CFLAGS
 ##############
 # pnes
 ##############
-set(PNES_INC sources)
+set(PNES_INC sources ${CMAKE_SOURCE_DIR}/src/skeleton/external)
 file(GLOB PNES_SRC sources/*.c*)
 list(APPEND PNES_SRC ../main.cpp)
 
-##############
-# deps
-##############
-include(FindPkgConfig)
-pkg_search_module(LIBARCHIVE REQUIRED libarchive)
-list(APPEND NESTOPIA_LDFLAGS ${LIBARCHIVE_LIBRARIES})
+if (NOT PLATFORM_PS3)
+    include(FindPkgConfig)
+    pkg_search_module(LIBARCHIVE REQUIRED libarchive)
+    list(APPEND NESTOPIA_LDFLAGS ${LIBARCHIVE_LIBRARIES})
+else ()
+    list(APPEND NESTOPIA_CFLAGS -DNO_LIBARCHIVE)
+endif ()
 
 #####################
 # PLATORM SPECIFIC
@@ -78,6 +79,13 @@ elseif (PLATFORM_PS4)
     set(PS4_PKG_TITLE_ID "PNES00001")
     set(PS4_PKG_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}")
     list(APPEND NESTOPIA_CFLAGS -DNST_DATADIR="/app0")
+elseif (PLATFORM_PS3)
+    set(PS3_PKG_TITLE "pNES - Portable Nestopia")
+    set(PS3_PKG_TITLE_ID "PNES00001")
+    set(PS3_PKG_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}")
+    list(APPEND PNES_INC sources/ps3)
+    list(APPEND NESTOPIA_SRC sources/ps3/port.c)
+    list(APPEND NESTOPIA_CFLAGS -DNST_DATADIR="/dev_hdd0/game/PNES00001/USRDIR")
 elseif (PLATFORM_SWITCH)
     #####################
     # SWITCH PLATFORM

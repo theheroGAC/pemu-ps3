@@ -118,8 +118,12 @@ bool UIRomInfo::loadTexture(const Game &game) {
                 previewBox->getSize().x / (float) texture->getTextureRect().width,
                 previewBox->getSize().y / (float) texture->getTextureRect().height);
         texture->setScale(tex_scaling, tex_scaling);
+#ifdef __PS3__
+        texture->setAlpha(255);
+#else
         texture->setAlpha(0);
         texture->add(new TweenAlpha(0, 255, 0.3f, TweenLoop::None, TweenState::Playing));
+#endif
         previewBox->add(texture);
     } else {
         if (texture && texture->isVisible()) {
@@ -133,6 +137,9 @@ bool UIRomInfo::loadTexture(const Game &game) {
 
 void UIRomInfo::load(const Game &game) {
     if (game.id <= 0) {
+#ifdef __PS3__
+        return;
+#endif
         // try to load title/preview texture even if game is not in DB
         loadTexture(game);
         hideText(systemText);

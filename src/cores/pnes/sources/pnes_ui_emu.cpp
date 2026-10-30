@@ -46,6 +46,7 @@ int PNESUiEmu::load(const ss_api::Game &game) {
     std::string fullPath = game.romsPath + game.path;
     if (nestopia_core_init(fullPath.c_str()) != 0) {
         getUi()->getUiProgressBox()->setVisibility(Visibility::Hidden);
+        getUi()->flip();
         getUi()->getUiMessageBox()->show("ERROR", "INVALID FILE", "OK");
         stop();
         return -1;
@@ -84,11 +85,13 @@ void PNESUiEmu::onUpdate() {
         // update nestopia buttons
         auto *players = getUi()->getInput()->getPlayers();
 
+#ifndef __PS3__
         if (players[0].buttons & c2d::Input::Button::X) {
             nst_set_rewind(0);
         } else if (Rewinder(emulator).GetDirection() == Rewinder::BACKWARD) {
             nst_set_rewind(1);
         }
+#endif
 
         for (int i = 0; i < NUMGAMEPADS; i++) {
             cNstPads->pad[i].buttons = 0;
@@ -163,7 +166,7 @@ void audio_queue() {
         }
 #endif
         uiEmu->getAudio()->play(audio_buffer, uiEmu->getAudio()->getSamples(),
-                                nst_pal() ? Audio::SyncMode::LowLatency : Audio::SyncMode::None);
+                                Audio::SyncMode::LowLatency);
     }
 }
 

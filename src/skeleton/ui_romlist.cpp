@@ -5,6 +5,8 @@
 #include "pemu.h"
 #include "ss_api.h"
 
+extern void boot_log(const char *msg);
+
 using namespace c2d;
 using namespace c2d::config;
 using namespace pemu;
@@ -137,8 +139,11 @@ std::string UIRomList::getPreview(const Game &game, UIRomList::PreviewType type)
 }
 
 void UIRomList::updateRomList() {
+    boot_log("updateRomList: filterRomList pre");
     filterRomList();
+    boot_log("updateRomList: sortRomList pre");
     sortRomList();
+    boot_log("updateRomList: sortRomList ok");
 
     std::string sys = pMain->getConfig()->get(PEMUConfig::OptId::UI_FILTER_SYSTEM)->getString();
     int systemId = sys == "ALL" ? -1 : pRomList->gameList->systemList.findByName(sys).id;
@@ -153,6 +158,7 @@ void UIRomList::updateRomList() {
 
     if (pListBox) {
         pListBox->setGames(mGameList.games);
+        boot_log("updateRomList: setGames ok");
     }
 
     if (pRomInfo) {
@@ -162,6 +168,7 @@ void UIRomList::updateRomList() {
         mTimerLoadVideoDone = 0;
         mTimerLoadVideo.restart();
     }
+    boot_log("updateRomList: done");
 }
 
 void UIRomList::filterRomList() {

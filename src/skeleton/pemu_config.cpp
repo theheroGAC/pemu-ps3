@@ -2,6 +2,7 @@
 // Created by cpasjuste on 13/09/23.
 //
 
+#include <dirent.h>
 #include "pemu.h"
 #include "pemu_config.h"
 
@@ -39,6 +40,9 @@ PEMUConfig::PEMUConfig(Renderer *renderer, const std::string &name, int version)
     main.addOption({"FULLSCREEN", {"OFF", "ON"}, 1, UI_FULLSCREEN, PEMU_CONFIG_RESTART_NEEDED});
 #endif
     Vector2i displaySize = C2DDevice::getDisplaySize();
+    if (displaySize.x <= 0 || displaySize.y <= 0) {
+        displaySize = {1280, 720};
+    }
     int aspect_index = (float) displaySize.x / (float) displaySize.y > 1.33f ? 0 : 1;
     main.addOption({
         "SKIN_ASPECT", {"16/9", "4/3"}, aspect_index,
@@ -238,30 +242,150 @@ bool PEMUConfig::addRomPath(const std::string &name, const std::string &path, co
 }
 
 std::vector<PEMUConfig::RomPath> PEMUConfig::getRomPaths() {
+    boot_log("getRomPaths: start");
     std::vector<RomPath> romPaths;
     auto roms = config_lookup(libConfigGetInstance(), std::string(getName() + ".ROMS").c_str());
-    if (!roms) {
-        printf("PEMUConfig::getRomPaths: config_lookup failed\n");
-        return romPaths;
-    }
-
-    int count = config_setting_length(roms);
-    for (int i = 0; i < count; ++i) {
-        auto setting = config_setting_get_elem(roms, i);
-        auto sysName = config_setting_get_elem(setting, 0);
-        auto sysId = config_setting_get_elem(setting, 1);
-        auto path = config_setting_get_elem(setting, 2);
-        if (sysName && sysId && path) {
-            std::string p = config_setting_get_string(path);
-            if (!Utility::endsWith(p, "/")) p += "/";
-            const char *s = config_setting_get_string(sysId);
-            if (s) {
-                auto id = Utility::parseHex(s);
-                romPaths.push_back({p, {(int) id, 0, config_setting_get_string(sysName)}});
+    if (roms) {
+        int count = config_setting_length(roms);
+        for (int i = 0; i < count; ++i) {
+            auto setting = config_setting_get_elem(roms, i);
+            auto sysName = config_setting_get_elem(setting, 0);
+            auto sysId = config_setting_get_elem(setting, 1);
+            auto path = config_setting_get_elem(setting, 2);
+            if (sysName && sysId && path) {
+                std::string p = config_setting_get_string(path);
+                if (!Utility::endsWith(p, "/")) p += "/";
+                const char *s = config_setting_get_string(sysId);
+                if (s) {
+                    auto id = Utility::parseHex(s);
+                    romPaths.push_back({p, {(int) id, 0, config_setting_get_string(sysName)}});
+                }
             }
         }
     }
+    boot_log("getRomPaths: config parsed");
 
+#ifdef __PS3__
+    static const char *ps3_roots[] = {
+        "/dev_usb000", "/dev_usb001", "/dev_usb002", "/dev_usb003",
+        "/dev_usb004", "/dev_usb005", "/dev_usb006", "/dev_usb007",
+        "/dev_hdd0"
+    };
+    for (size_t i = 0; i < sizeof(ps3_roots) / sizeof(ps3_roots[0]); i++) {
+        DIR *dev_dir = opendir(ps3_roots[i]);
+        if (!dev_dir) {
+            continue;
+        }
+        closedir(dev_dir);
+
+        std::vector<std::string> subdirs;
+        if (std::string(ps3_roots[i]) != "/dev_hdd0") {
+            subdirs.push_back(std::string(ps3_roots[i]) + "/");
+        }
+        subdirs.push_back(std::string(ps3_roots[i]) + "/roms/");
+        subdirs.push_back(std::string(ps3_roots[i]) + "/roms/" + Utility::toLower(getName()) + "/");
+        subdirs.push_back(std::string(ps3_roots[i]) + "/" + Utility::toLower(getName()) + "/");
+        subdirs.push_back(std::string(ps3_roots[i]) + "/" + Utility::toLower(getName()) + "/roms/");
+
+        if (getName() == "PGEN") {
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/megadrive/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/genesis/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/mastersystem/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/gamegear/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/megacd/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/sg1000/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/megadrive/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/genesis/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/mastersystem/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/gamegear/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/megacd/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/sg1000/");
+        } else if (getName() == "PNES") {
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/nes/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/fds/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/nes/");
+        } else if (getName() == "PSNES") {
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/snes/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/sfc/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/snes/");
+        } else if (getName() == "PGBA") {
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/gba/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/gbc/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/gb/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/gba/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/gbc/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/gb/");
+        } else if (getName() == "PFBN" || getName() == "PFBNEO") {
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/fba/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/fbneo/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/roms/arcade/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/fbneo/");
+            subdirs.push_back(std::string(ps3_roots[i]) + "/arcade/");
+        }
+
+        for (const auto &sd: subdirs) {
+            DIR *check_dir = opendir(sd.c_str());
+            if (!check_dir) {
+                continue;
+            }
+            closedir(check_dir);
+
+            bool already_present = false;
+            for (const auto &existing: romPaths) {
+                if (existing.path == sd) {
+                    already_present = true;
+                    break;
+                }
+            }
+            if (already_present) {
+                continue;
+            }
+
+            int sysId = 1;
+            std::string sysName = "Megadrive";
+            if (getName() == "PGEN") {
+                if (sd.find("mastersystem") != std::string::npos || sd.find("sms") != std::string::npos) {
+                    sysId = 2;
+                    sysName = "Master System";
+                } else if (sd.find("gamegear") != std::string::npos || sd.find("gg") != std::string::npos) {
+                    sysId = 21;
+                    sysName = "Game Gear";
+                } else if (sd.find("megacd") != std::string::npos || sd.find("segacd") != std::string::npos) {
+                    sysId = 20;
+                    sysName = "Mega-CD";
+                } else if (sd.find("sg1000") != std::string::npos) {
+                    sysId = 109;
+                    sysName = "SG-1000";
+                }
+            } else if (getName() == "PNES") {
+                sysId = 3;
+                sysName = "NES";
+            } else if (getName() == "PSNES") {
+                sysId = 4;
+                sysName = "Super Nintendo";
+            } else if (getName() == "PGBA") {
+                if (sd.find("gbc") != std::string::npos) {
+                    sysId = 11;
+                    sysName = "Game Boy Color";
+                } else if (sd.find("gba") != std::string::npos) {
+                    sysId = 12;
+                    sysName = "Game Boy Advance";
+                } else {
+                    sysId = 10;
+                    sysName = "Game Boy";
+                }
+            } else if (getName() == "PFBN" || getName() == "PFBNEO") {
+                sysId = 0x01;
+                sysName = "Arcade";
+            }
+
+            printf("PEMUConfig::getRomPaths: discovered dynamic path %s (%s)\n", sd.c_str(), sysName.c_str());
+            romPaths.push_back({sd, {sysId, 0, sysName}});
+        }
+    }
+#endif
+
+    boot_log("getRomPaths: done");
     return romPaths;
 }
 

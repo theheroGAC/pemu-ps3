@@ -11,7 +11,7 @@ extern "C" {
 #include "shared.h"
 }
 
-static short sound_buffer[2048];
+static short sound_buffer[4096];
 
 static uint32_t brm_crc[2];
 static uint8 brm_format[0x40] = {
@@ -32,6 +32,7 @@ PGENUiEmu::PGENUiEmu(UiMain *ui) : UiEmu(ui) {
 }
 
 int PGENUiEmu::load(const ss_api::Game &game) {
+    boot_log("emu load: start");
     currentGame = game;
     getUi()->getUiProgressBox()->setTitle(game.name);
     getUi()->getUiProgressBox()->setMessage("Please wait...");
@@ -40,7 +41,6 @@ int PGENUiEmu::load(const ss_api::Game &game) {
     getUi()->getUiProgressBox()->setLayer(1000);
     getUi()->flip();
 
-    // check for mega-cd bios before loading a rom
     if (game.system.id == 20) {
         if (!pMain->getIo()->exist(CD_BIOS_EU)
             || !pMain->getIo()->exist(CD_BIOS_US)
@@ -53,16 +53,17 @@ int PGENUiEmu::load(const ss_api::Game &game) {
         }
     }
 
-    // load genesis bios
+    boot_log("emu load: loadBios");
     loadBios();
 
-    // video init
+    boot_log("emu load: addVideo");
     memset(&bitmap, 0, sizeof(bitmap));
     addVideo(&bitmap.data, &bitmap.pitch, {512, 512});
 
-    // load rom
+    boot_log("emu load: load_rom");
     std::string path = game.romsPath + game.path;
     if (!load_rom((char *) path.c_str())) {
+        boot_log("emu load: load_rom failed");
         getUi()->getUiProgressBox()->setVisibility(Visibility::Hidden);
         getUi()->getUiMessageBox()->show(
             "ERROR", "INVALID FILE OR MISSING BIOS...", "OK");
@@ -70,22 +71,22 @@ int PGENUiEmu::load(const ss_api::Game &game) {
         return -1;
     }
 
-    // system init
+    boot_log("emu load: system_init");
     system_init();
 
-    // audio init
+    boot_log("emu load: addAudio");
     targetFps = vdp_pal ? 50 : 60;
     addAudio(48000, vdp_pal ? 966 : 801);
     audio_init(audio->getSampleRate(), targetFps);
 
-    // game gear "special" resolution handling
     if (system_hw == SYSTEM_GG || system_hw == SYSTEM_GGMS) {
         resizeVideo(true);
     }
 
-    // load mega-cd ram if needed
+    boot_log("emu load: loadBram");
     loadBram();
 
+    boot_log("emu load: loadSram");
     loadSram();
 
     getUi()->getUiProgressBox()->setProgress(1);
@@ -93,9 +94,10 @@ int PGENUiEmu::load(const ss_api::Game &game) {
     getUi()->delay(500);
     getUi()->getUiProgressBox()->setVisibility(Visibility::Hidden);
 
-    /* reset system hardware */
+    boot_log("emu load: system_reset");
     system_reset();
 
+    boot_log("emu load: UiEmu::load done");
     return UiEmu::load(game);
 }
 
@@ -108,25 +110,13 @@ void PGENUiEmu::stop() {
 
 void PGENUiEmu::onUpdate() {
     if (!isPaused()) {
-        // inputs
-        //
-        // NOTE: Genesis-Plus-GX's input.dev[]/input.pad[] arrays are NOT indexed by
-        // simple player number (0-3). They're indexed by physical device "slot", per
-        // core/input_hw/input.c (input_init()):
-        //   slot 0     = port A, controller 1  (player 1)
-        //   slot 1-3   = port A extra devices  (4-Way Play / Team Player on port A only)
-        //   slot 4     = port B, controller 1  (player 2)
-        //   slot 5-6   = the two extra J-CART gamepads (player 3 & player 4), which the
-        //                core auto-enables when it detects a J-CART game at ROM load
-        //                (cart.special & HW_J_CART) - no extra setup needed here beyond
-        //                routing input to the right slot
-        //   slot 7     = port B extra device (Justifier 2P)
-        //
-        // The old code fed physical controller index i (0..PLAYER_MAX-1) straight into
-        // input.dev[i]/input.pad[i], which only lined up for player 1 (slot 0). Slots
-        // 1-3 are never populated for a plain 2-controller/J-CART setup, so every other
-        // physical controller was silently ignored - hence only 1 player worked, even
-        // in native 2-player Mega Drive games, let alone 4-player J-CART ones.
+        static int emuFrameCount = 0;
+        if (emuFrameCount < 5 || emuFrameCount == 60) {
+            char fbuf[64];
+            snprintf(fbuf, sizeof(fbuf), "emu frame %d pre", emuFrameCount);
+            boot_log(fbuf);
+        }
+
         static const int genesisDeviceSlot[4] = {0, 4, 5, 6};
         for (int p = 0; p < 4; p++) {
             int dev = genesisDeviceSlot[p];
@@ -175,7 +165,6 @@ void PGENUiEmu::onUpdate() {
             }
         }
 
-        // genesis frame step
         if (system_hw == SYSTEM_MCD) {
             system_frame_scd(0);
         } else if ((system_hw & SYSTEM_PBC) == SYSTEM_MD) {
@@ -184,21 +173,17 @@ void PGENUiEmu::onUpdate() {
             system_frame_sms(0);
         }
 
-        // video
         video->unlock();
 
-        // audio
         int samples = audio_update(sound_buffer);
-#if 0
-        int queued = audio->getSampleBufferQueued();
-        int capacity = audio->getSampleBufferCapacity();
-        if (samples + queued > capacity) {
-            printf("WARNING: samples: %i, queued: %i, capacity: %i (fps: %i)\n",
-                   samples, queued, capacity, vdp_pal ? 50 : 60);
-        }
-#endif
         getAudio()->play(sound_buffer, samples,
                          vdp_pal ? Audio::SyncMode::LowLatency : Audio::SyncMode::Safe);
+
+        if (emuFrameCount < 5 || emuFrameCount == 60) {
+            char fbuf[64];
+            snprintf(fbuf, sizeof(fbuf), "emu frame %d ok", emuFrameCount++);
+            boot_log(fbuf);
+        }
     }
 
     return UiEmu::onUpdate();

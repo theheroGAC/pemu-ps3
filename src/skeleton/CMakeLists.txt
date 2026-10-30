@@ -14,7 +14,12 @@ file(GLOB CROSS2DUI_SOURCE
         ${CMAKE_CURRENT_SOURCE_DIR}/skin/*.c*
 )
 
-set(FLAGS -D__SSCRAP__)
+set(FLAGS)
+if (OPTION_SSCRAP)
+    list(APPEND FLAGS -D__SSCRAP__)
+    list(APPEND LDFLAGS sscrap)
+    list(APPEND CROSS2DUI_INCLUDE ${CMAKE_SOURCE_DIR}/external/sscrap/include)
+endif ()
 
 if (OPTION_UPDATE_CONFIG)
     list(APPEND FLAGS -D__UPDATE_CONFIG__)
@@ -69,4 +74,4 @@ endif ()
 add_library(${PROJECT_NAME} STATIC ${CROSS2DUI_SOURCE})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CROSS2DUI_INCLUDE})
 target_compile_options(${PROJECT_NAME} PUBLIC ${FLAGS})
-target_link_libraries(${PROJECT_NAME} cross2d sscrap ${LDFLAGS})
+target_link_libraries(${PROJECT_NAME} cross2d ${LDFLAGS})

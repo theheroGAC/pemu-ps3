@@ -25,8 +25,20 @@ PNESConfig::PNESConfig(Renderer *renderer, const int version) : PEMUConfig(rende
     // "romlist.cpp" (RomList::build) will also reload config, but we need new roms paths
     PEMUConfig::load();
 
-    // add custom rom path
     addRomPath("NES", io->getDataPath() + "roms/", {3, 0, "NES"});
+#ifdef __PS3__
+    addRomPath("HDD0_ROMS", "/dev_hdd0/roms/", {3, 0, "NES"});
+    addRomPath("HDD0_NES", "/dev_hdd0/roms/nes/", {3, 0, "NES"});
+    for (int i = 0; i < 8; i++) {
+        char name[32], path[64];
+        snprintf(name, sizeof(name), "USB%d_ROMS", i);
+        snprintf(path, sizeof(path), "/dev_usb%03d/roms/", i);
+        addRomPath(name, path, {3, 0, "NES"});
+        snprintf(name, sizeof(name), "USB%d_NES", i);
+        snprintf(path, sizeof(path), "/dev_usb%03d/roms/nes/", i);
+        addRomPath(name, path, {3, 0, "NES"});
+    }
+#endif
     PEMUConfig::save();
 
     // create roms paths if needed

@@ -9,6 +9,20 @@
 using namespace c2d;
 using namespace pemu;
 
+std::string PFBNRomList::getGameListPath(const std::string &romPath, const ss_api::System &system) {
+    std::string path = romPath + "gamelist.xml";
+    if (ui->getIo()->exist(path)) {
+        return path;
+    }
+    if (system.id == HARDWARE_PREFIX_ARCADE) {
+        std::string fallback = ui->getIo()->getRomFsPath() + "gamelist.xml";
+        if (ui->getIo()->exist(fallback)) {
+            return fallback;
+        }
+    }
+    return path;
+}
+
 void PFBNRomList::build(const ss_api::GameList::GameAddedCb &cb) {
     float time_start = ui->getElapsedTime().asSeconds();
 

@@ -106132,4 +106132,314 @@ As an added attraction, when a game player completes each level, there are anima
         <image type="mixrbv2">media/mixrbv2/zzyzzyxx.png</image>
         <video type="video">media/video/zzyzzyxx.mp4</video>
     </game>
+
+    <game id="872098594">
+        <path>birdtrya.zip</path>
+        <name>Birdie Try (Japan revision 2)</name>
+        <desc>Birdie Try (Japan revision 2)</desc>
+        <releasedate>19880101T000000</releasedate>
+        <developer>Data East Corporation</developer>
+        <publisher>Data East Corporation</publisher>
+        <players>1-2</players>
+        <cloneof>birdtry.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="1189404766">
+        <path>dblaxleul.zip</path>
+        <name>Double Axle (US, Rev 1, Linkable)</name>
+        <desc>Double Axle (US, Rev 1, Linkable)</desc>
+        <releasedate>19910101T000000</releasedate>
+        <developer>Taito America Corporation</developer>
+        <publisher>Taito America Corporation</publisher>
+        <players>1-2</players>
+        <cloneof>dblaxle.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="674806023">
+        <path>dbreedm72j.zip</path>
+        <name>Dragon Breed (Japan, M72 hardware)</name>
+        <desc>Dragon Breed (Japan, M72 hardware)</desc>
+        <players>1-2</players>
+        <cloneof>dbreed.zip</cloneof>
+        <system id="148" parentid="75">Irem Classics</system>
+        <video type="video">media/video/dbreed.mp4</video>
+        <video type="video">media/video/dbreed.mp4</video>
+    </game>
+    <game id="835050474">
+        <path>deerhuntj.zip</path>
+        <name>Deer Hunting USA V4.4.1 (Japan)</name>
+        <desc>Deer Hunting USA V4.4.1 (Japan)</desc>
+        <releasedate>20000101T000000</releasedate>
+        <developer>Sammy USA Corporation</developer>
+        <publisher>Sammy USA Corporation</publisher>
+        <players>1-2</players>
+        <cloneof>deerhunt.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="1857917586">
+        <path>drgnmst2.zip</path>
+        <name>Dragon Master (set 2)</name>
+        <desc>Dragon Master (set 2)</desc>
+        <releasedate>19940101T000000</releasedate>
+        <developer>Unico</developer>
+        <publisher>Unico</publisher>
+        <players>1-2</players>
+        <cloneof>drgnmst.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="2127346690">
+        <path>eaglshotj.zip</path>
+        <name>Eagle Shot Golf (Japan, bootleg?)</name>
+        <desc>Eagle Shot Golf (Japan, bootleg?)</desc>
+        <releasedate>19940101T000000</releasedate>
+        <developer>Sammy</developer>
+        <publisher>Sammy</publisher>
+        <players>1-2</players>
+        <cloneof>eaglshot.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="1042814011">
+        <path>galpani4j.zip</path>
+        <name>Gals Panic 4 (Japan)</name>
+        <desc>Gals Panic 4 (Japan)</desc>
+        <releasedate>19960101T000000</releasedate>
+        <developer>Kaneko</developer>
+        <publisher>Kaneko</publisher>
+        <players>1-2</players>
+        <cloneof>galpani4.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="1350186833">
+        <path>galpanisa.zip</path>
+        <name>Gals Panic S - Extra Edition (Asia)</name>
+        <desc>Gals Panic S - Extra Edition (Asia)</desc>
+        <releasedate>19970101T000000</releasedate>
+        <developer>Kaneko</developer>
+        <publisher>Kaneko</publisher>
+        <players>1-2</players>
+        <cloneof>galpanis.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="1354930517">
+        <path>galpanise.zip</path>
+        <name>Gals Panic S - Extra Edition (Europe, set 2)</name>
+        <desc>Gals Panic S - Extra Edition (Europe, set 2)</desc>
+        <releasedate>19970101T000000</releasedate>
+        <developer>Kaneko</developer>
+        <publisher>Kaneko</publisher>
+        <players>1-2</players>
+        <cloneof>galpanis.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="1489633846">
+        <path>gt98t302.zip</path>
+        <name>Golden Tee '98 Tournament (v3.02)</name>
+        <desc>Golden Tee '98 Tournament (v3.02)</desc>
+        <releasedate>19980101T000000</releasedate>
+        <developer>Incredible Technologies</developer>
+        <publisher>Incredible Technologies</publisher>
+        <players>1-2</players>
+        <cloneof>gt98.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="1355593021">
+        <path>happy6100hk.zip</path>
+        <name>Happy 6-in-1 (V100 - V100MK, Hong Kong)</name>
+        <desc>Happy 6-in-1 (V100 - V100MK, Hong Kong)</desc>
+        <releasedate>20040101T000000</releasedate>
+        <developer>IGS</developer>
+        <publisher>IGS</publisher>
+        <players>1-2</players>
+        <cloneof>happy6.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="1388649810">
+        <path>hardyard11.zip</path>
+        <name>Hard Yardage (v1.10)</name>
+        <desc>Hard Yardage (v1.10)</desc>
+        <releasedate>19930101T000000</releasedate>
+        <developer>Strata/Incredible Technologies</developer>
+        <publisher>Strata/Incredible Technologies</publisher>
+        <players>1-2</players>
+        <cloneof>hardyard.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="1881082838">
+        <path>hbarrelu.zip</path>
+        <name>Heavy Barrel (US)</name>
+        <desc>Heavy Barrel (US)</desc>
+        <releasedate>19870101T000000</releasedate>
+        <developer>Data East USA</developer>
+        <publisher>Data East USA</publisher>
+        <players>1-2</players>
+        <cloneof>hbarrel.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="1705440310">
+        <path>killbld106.zip</path>
+        <name>The Killing Blade (V106)</name>
+        <desc>The Killing Blade (V106)</desc>
+        <releasedate>19980101T000000</releasedate>
+        <developer>IGS</developer>
+        <publisher>IGS</publisher>
+        <players>1-2</players>
+        <cloneof>killbld.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="1095171771">
+        <path>mk2p.zip</path>
+        <name>Mortal Kombat II Plus (Beta 2, Hack)</name>
+        <desc>Mortal Kombat II Plus (Beta 2, Hack)</desc>
+        <releasedate>19930101T000000</releasedate>
+        <developer>hack</developer>
+        <publisher>hack</publisher>
+        <players>1-2</players>
+        <cloneof>mk2.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="946898662">
+        <path>pastelis.zip</path>
+        <name>Pastel Island (Japan, prototype)</name>
+        <desc>Pastel Island (Japan, prototype)</desc>
+        <releasedate>19930101T000000</releasedate>
+        <developer>Visco</developer>
+        <publisher>Visco</publisher>
+        <players>1-2</players>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="1025291297">
+        <path>pktgaldxa.zip</path>
+        <name>Pocket Gal Deluxe (Asia v3.00)</name>
+        <desc>Pocket Gal Deluxe (Asia v3.00)</desc>
+        <releasedate>19930101T000000</releasedate>
+        <developer>Data East Corporation</developer>
+        <publisher>Data East Corporation</publisher>
+        <players>1-2</players>
+        <cloneof>pktgaldx.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="917430239">
+        <path>photoy2k103j.zip</path>
+        <name>Photo Y2K / Real and Fake (V103, Japan)</name>
+        <desc>Photo Y2K / Real and Fake (V103, Japan)</desc>
+        <releasedate>19990101T000000</releasedate>
+        <developer>IGS</developer>
+        <publisher>IGS</publisher>
+        <players>1-2</players>
+        <cloneof>photoy2k.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="1082986160">
+        <path>pulirulaa.zip</path>
+        <name>PuLiRuLa (World, earlier?)</name>
+        <desc>PuLiRuLa (World, earlier?)</desc>
+        <releasedate>19910101T000000</releasedate>
+        <developer>Taito Corporation</developer>
+        <publisher>Taito Corporation</publisher>
+        <players>1-2</players>
+        <cloneof>pulirula.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="673882034">
+        <path>sf2ceblp.zip</path>
+        <name>Street Fighter II' - Champion Edition (bootleg, set 1)</name>
+        <desc>Street Fighter II' - Champion Edition (bootleg, set 1)</desc>
+        <players>1-2</players>
+        <cloneof>sf2ce.zip</cloneof>
+        <system id="6" parentid="75">Capcom Play System</system>
+        <video type="video">media/video/sf2ce.mp4</video>
+        <video type="video">media/video/sf2ce.mp4</video>
+    </game>
+    <game id="1800449323">
+        <path>sf2cems6a.zip</path>
+        <name>Street Fighter II' - Champion Edition (Mega System 6A bootleg)</name>
+        <desc>Street Fighter II' - Champion Edition (Mega System 6A bootleg)</desc>
+        <players>1-2</players>
+        <cloneof>sf2ce.zip</cloneof>
+        <system id="6" parentid="75">Capcom Play System</system>
+        <video type="video">media/video/sf2ce.mp4</video>
+        <video type="video">media/video/sf2ce.mp4</video>
+    </game>
+    <game id="320974681">
+        <path>sftmj112.zip</path>
+        <name>Street Fighter: The Movie (v1.12N, Japan)</name>
+        <desc>Street Fighter: The Movie (v1.12N, Japan)</desc>
+        <releasedate>19950101T000000</releasedate>
+        <developer>Capcom / Incredible Technologies</developer>
+        <publisher>Capcom / Incredible Technologies</publisher>
+        <players>1-2</players>
+        <cloneof>sftm.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="323346523">
+        <path>sftmj114.zip</path>
+        <name>Street Fighter: The Movie (v1.14N, Japan)</name>
+        <desc>Street Fighter: The Movie (v1.14N, Japan)</desc>
+        <releasedate>19950101T000000</releasedate>
+        <developer>Capcom / Incredible Technologies</developer>
+        <publisher>Capcom / Incredible Technologies</publisher>
+        <players>1-2</players>
+        <cloneof>sftm.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="1202239473">
+        <path>timekill121a.zip</path>
+        <name>Time Killers (v1.21, alternate ROM board)</name>
+        <desc>Time Killers (v1.21, alternate ROM board)</desc>
+        <releasedate>19920101T000000</releasedate>
+        <developer>Strata/Incredible Technologies</developer>
+        <publisher>Strata/Incredible Technologies</publisher>
+        <players>1-2</players>
+        <cloneof>timekill.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="394846555">
+        <path>timekill132i.zip</path>
+        <name>Time Killers (v1.32I)</name>
+        <desc>Time Killers (v1.32I)</desc>
+        <releasedate>19920101T000000</releasedate>
+        <developer>Strata/Incredible Technologies</developer>
+        <publisher>Strata/Incredible Technologies</publisher>
+        <players>1-2</players>
+        <cloneof>timekill.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="44394276">
+        <path>umk3pb1.zip</path>
+        <name>Ultimate Mortal Kombat 3 (prototype, bootleg)</name>
+        <desc>Ultimate Mortal Kombat 3 (prototype, bootleg)</desc>
+        <players>1-2</players>
+        <cloneof>umk3.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="523558873">
+        <path>umk3uc.zip</path>
+        <name>Ultimate Mortal Kombat 3 (US, hack)</name>
+        <desc>Ultimate Mortal Kombat 3 (US, hack)</desc>
+        <players>1-2</players>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="486795322">
+        <path>umk3te.zip</path>
+        <name>Ultimate Mortal Kombat 3 Tournament Edition (hack, V2.0.042/August 2018)</name>
+        <desc>Ultimate Mortal Kombat 3 Tournament Edition (hack, V2.0.042/August 2018)</desc>
+        <releasedate>20180101T000000</releasedate>
+        <developer>Midway</developer>
+        <publisher>Midway</publisher>
+        <players>1-2</players>
+        <cloneof>umk3.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+    <game id="603148720">
+        <path>wcbowl10.zip</path>
+        <name>World Class Bowling (v1.0)</name>
+        <desc>World Class Bowling (v1.0)</desc>
+        <releasedate>19950101T000000</releasedate>
+        <developer>Incredible Technologies</developer>
+        <publisher>Incredible Technologies</publisher>
+        <players>1-2</players>
+        <cloneof>wcbowl.zip</cloneof>
+                <system id="75" parentid="0">Mame</system>
+    </game>
+
 </gameList>

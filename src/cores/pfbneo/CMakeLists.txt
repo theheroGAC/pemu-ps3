@@ -300,9 +300,12 @@ elseif (PLATFORM_PS3)
     ##############
     # PS3
     ##############
+    list(REMOVE_ITEM FLAGS -DLSB_FIRST)
+    list(APPEND INC sources/ps3)
     list(APPEND FLAGS
             -D__PS3__
             -DNO_KEYBOARD -D__CELLOS_LV2__ -DUSE_FILE32API
+            -D__fastcall= -D__stdcall=
             -mhard-float -ffunction-sections -fdata-sections)
     list(APPEND LDFLAGS
             ${PSL1GHT}/ppu/lib/libpngdec.a

@@ -54,7 +54,7 @@ PFBAConfig::PFBAConfig(Renderer *renderer, const int version) : PEMUConfig(rende
                       0, EMU_FRAMESKIP, C2D_CONFIG_RESTART_EMU_NEEDED});
 #endif
 
-#if defined(__PS4__) || defined(ANDROID)
+#if defined(__PS4__) || defined(__PS3__) || defined(ANDROID)
     // force 48000hz audio output
     get(EMU_AUDIO_FREQ)->setArrayIndex(4);
     get(EMU_AUDIO_FREQ)->setFlags(PEMUConfig::Flags::HIDDEN);

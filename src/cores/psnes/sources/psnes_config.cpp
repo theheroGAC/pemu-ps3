@@ -45,6 +45,19 @@ PSNESConfig::PSNESConfig(Renderer *renderer, int version) : PEMUConfig(renderer,
 
     // add custom rom path
     addRomPath("SNES", io->getDataPath() + "roms/", {4, 0, "Super Nintendo"});
+#ifdef __PS3__
+    addRomPath("HDD0_ROMS", "/dev_hdd0/roms/", {4, 0, "Super Nintendo"});
+    addRomPath("HDD0_SNES", "/dev_hdd0/roms/snes/", {4, 0, "Super Nintendo"});
+    for (int i = 0; i < 8; i++) {
+        char name[32], path[64];
+        snprintf(name, sizeof(name), "USB%d_ROMS", i);
+        snprintf(path, sizeof(path), "/dev_usb%03d/roms/", i);
+        addRomPath(name, path, {4, 0, "Super Nintendo"});
+        snprintf(name, sizeof(name), "USB%d_SNES", i);
+        snprintf(path, sizeof(path), "/dev_usb%03d/roms/snes/", i);
+        addRomPath(name, path, {4, 0, "Super Nintendo"});
+    }
+#endif
     PEMUConfig::save();
 
     // create roms paths if needed

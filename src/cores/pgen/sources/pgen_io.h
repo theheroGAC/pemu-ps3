@@ -34,6 +34,13 @@ namespace c2d {
             return "/data/pgen/";
         }
 #endif
+#elif __PS3__
+        std::string getDataPath() override {
+            return "/dev_hdd0/game/PGEN00001/USRDIR/";
+        }
+        std::string getRomFsPath() override {
+            return "/dev_hdd0/game/PGEN00001/USRDIR/";
+        }
 #elif __3DS__
 #ifndef NDEBUG
         std::string getDataPath() override {

@@ -29,6 +29,10 @@ private:
 
     bool audio_sync = false;
 
+    int audioPeak = 0;
+
+    int audioFrames = 0;
+
     int frameskip = 0;
 
     C2DClock clock;
