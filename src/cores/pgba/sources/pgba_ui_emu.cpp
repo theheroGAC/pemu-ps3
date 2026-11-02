@@ -14,7 +14,11 @@ extern "C" {
 #include "mgba/internal/gb/gb.h"
 }
 
+#ifdef __PS3__
+#define SAMPLE_RATE 48000
+#else
 #define SAMPLE_RATE 44100
+#endif
 
 mCore *s_core = nullptr;
 static VDir *s_vDir;
@@ -243,7 +247,7 @@ void PGBAUiEmu::onUpdate() {
             const int produced = blip_read_samples(audioChannelLeft, audioSampleBuffer, (int) samplesToRead, true);
             blip_read_samples(audioChannelRight, audioSampleBuffer + 1, (int) samplesToRead, true);
             if (produced > 0) {
-                audio->play(audioSampleBuffer, produced);
+                audio->play(audioSampleBuffer, produced, Audio::SyncMode::Safe);
             }
         }
     }

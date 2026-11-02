@@ -7,13 +7,17 @@ project(pgba)
 # mGBA
 ##################
 set(LIBMGBA_ONLY ON CACHE BOOL "")
-set(CMAKE_POLICY_VERSION_MINIMUM 3.5) # TODO: bump mgba core
+set(SKIP_GIT ON CACHE BOOL "")
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 add_subdirectory(${CMAKE_SOURCE_DIR}/external/cores/mgba build)
 set_property(TARGET mgba APPEND PROPERTY COMPILE_DEFINITIONS
         "_GNU_SOURCE;IOAPI_NO_64;USE_LIBZIP;HAVE_CRC32;COLOR_16_BIT;COLOR_5_6_5;DISABLE_THREADING"
 )
 if (PLATFORM_VITA)
     set_property(TARGET mgba APPEND PROPERTY COMPILE_DEFINITIONS "PSP2")
+elseif (PLATFORM_PS3)
+    target_compile_options(mgba PRIVATE -U__STRICT_ANSI__)
+    set_property(TARGET mgba APPEND PROPERTY COMPILE_DEFINITIONS "__PS3__;PATH_MAX=1024")
 endif ()
 
 ##############
@@ -49,7 +53,31 @@ elseif (PLATFORM_PS4)
     set(PS4_PKG_TITLE_ID "PGBA00001")
     set(PS4_PKG_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}")
     list(APPEND GBA_CFLAGS -DHAVE_SYS_PARAM_H)
-    list(APPEND PGBA_CFLAGS -DNDEBUG) # fix log.h:66:18: error: expected ')' (printf redefine in c2d.h)
+    list(APPEND PGBA_CFLAGS -DNDEBUG)
+elseif (PLATFORM_PS3)
+    set(PS3_PKG_TITLE "pGBA - Portable GameBoy Advance")
+    set(PS3_PKG_TITLE_ID "PGBA00001")
+    set(PS3_PKG_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}")
+    list(APPEND GBA_CFLAGS -DHAVE_SYS_PARAM_H)
+    list(APPEND PGBA_CFLAGS
+            -D__PS3__
+            -DNO_KEYBOARD -D__CELLOS_LV2__ -DUSE_FILE32API
+            -D__fastcall= -D__stdcall=
+            -mhard-float -ffunction-sections -fdata-sections -DNDEBUG)
+    list(APPEND PGBA_LDFLAGS
+            ${PSL1GHT}/ppu/lib/libpngdec.a
+            ${PSL1GHT}/portlibs/ppu/lib/libfreetype.a
+            ${PSL1GHT}/portlibs/ppu/lib/libpng.a
+            ${PSL1GHT}/portlibs/ppu/lib/libtiff.a
+            ${PSL1GHT}/portlibs/ppu/lib/libjpeg.a
+            ${PSL1GHT}/ppu/lib/libgcm_sys.a
+            ${PSL1GHT}/ppu/lib/librsx.a
+            ${PSL1GHT}/ppu/lib/libsysutil.a
+            ${PSL1GHT}/ppu/lib/libsysmodule.a
+            ${PSL1GHT}/ppu/lib/libio.a
+            ${PSL1GHT}/ppu/lib/libaudio.a
+            ${PSL1GHT}/portlibs/ppu/lib/libzip.a
+            ${PSL1GHT}/portlibs/ppu/lib/libz.a)
 elseif (PLATFORM_SWITCH)
     #####################
     # SWITCH PLATFORM
